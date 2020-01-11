@@ -1,10 +1,19 @@
 // 封装axios模块
 // 导入axios
 import axios from 'axios'
+import jsonBig from 'json-bigint'
 // 复制一个axios
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/'
 })
+// 配置后端返回数据超出js安全整数范围
+request.defaults.transformResponse = [function (data) {
+  try {
+    return jsonBig.parse(data)
+  } catch (err) {
+    return {}
+  }
+}]
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
