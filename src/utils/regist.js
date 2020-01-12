@@ -11,7 +11,8 @@ import {
   Tab,
   Tabs,
   List,
-  PullRefresh
+  PullRefresh,
+  Image
 } from 'vant'
 
 Vue
@@ -27,3 +28,4 @@ Vue
   .use(Tabs)
   .use(List)
   .use(PullRefresh)
+  .use(Image)

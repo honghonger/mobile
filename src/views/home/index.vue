@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async onLoad () {
-      // 获取当前频道列表
+      // 获取当前频道
       const articleChannel = this.channels[this.active]
       //   获取当前频道列表
       const articles = articleChannel.articles
@@ -76,11 +76,26 @@ export default {
       }
     },
     // 下拉刷新
-    onRefresh () {
-      setTimeout(() => {
-        this.$toast('刷新成功')
-        this.isLoading = false
-      }, 2000)
+    async onRefresh () {
+      // 获取当前频道
+      const articleChannel = this.channels[this.active]
+      //   获取当前频道列表
+      const articles = articleChannel.articles
+      // 1下拉刷新去请求数据
+      const res = await getArticles({
+        channel_id: articleChannel.id,
+        timestamp: Date.now(),
+        with_top: 1
+      })
+      // 2请求成功之后加在文章列表的顶部
+      articleChannel.articles.unshift(...res.data.data.results)
+      //   关闭loading
+      this.isLoading = false
+      // 3提示用户刷新了几条数据
+      const message = articles.length
+        ? `更新了${articles.length}条数据`
+        : '暂无数据更新'
+      this.$toast(message)
     },
     // 请求频道列表
     async loadUserChannels () {
