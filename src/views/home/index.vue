@@ -14,14 +14,14 @@
             <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
                 <van-list
                     v-model="loading"
-                    :finished="finished"
+                    :finished="channel.finished"
                     finished-text="没有更多了"
                     @load="onLoad"
                     >
                     <van-cell
-                        v-for="item in list"
-                        :key="item"
-                        :title="item"
+                        v-for="article in channel.articles"
+                        :key="article.art_id.toString()"
+                        :title="article.title"
                     />
                 </van-list>
             </van-pull-refresh>
@@ -34,6 +34,7 @@
 
 <script>
 import { getUserChannels } from '@/api/user.js'
+import { getArticles } from '@/api/article'
 export default {
   name: 'HomePage',
   data () {
@@ -50,20 +51,29 @@ export default {
     this.loadUserChannels()
   },
   methods: {
-    onLoad () {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
+    async onLoad () {
+      // 获取当前频道列表
+      const articleChannel = this.channels[this.active]
+      //   获取当前频道列表
+      const articles = articleChannel.articles
+      // 请求数据
+      const res = await getArticles({
+        channel_id: articleChannel.id,
+        timestamp: articleChannel.timestamp || Date.now(),
+        with_top: 1
+      })
+      //   将数据添加到数据列表中
+      articles.push(...res.data.data.results)
+      // 加载状态结束
+      this.loading = false
 
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+      // 数据全部加载完成
+      const pretimestamp = res.data.data.pre_timestamp
+      if (pretimestamp) {
+        articleChannel.timestamp = pretimestamp
+      } else {
+        articleChannel.finished = true
+      }
     },
     // 下拉刷新
     onRefresh () {
@@ -75,7 +85,14 @@ export default {
     // 请求频道列表
     async loadUserChannels () {
       const res = await getUserChannels()
-      this.channels = res.data.data.channels
+      //   为每个频道添加一个文章列表，利用循环
+      const channels = res.data.data.channels
+      channels.forEach(channel => {
+        channel.articles = []// 频道文章列表
+        channel.finished = false// 结束状态
+        channel.timestamp = null
+      })
+      this.channels = channels
     }
   }
 }
