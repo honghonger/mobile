@@ -2,6 +2,7 @@
 // 导入axios
 import axios from 'axios'
 import jsonBig from 'json-bigint'
+import store from '@/store'
 // 复制一个axios
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/'
@@ -16,7 +17,11 @@ request.defaults.transformResponse = [function (data) {
 }]
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
+  // 读取到store里面的数据user
+  const user = store.state.user
+  if (user) {
+    config.headers.Authorization = `Bearer ${user.token}`
+  }
   return config
 }, function (error) {
   // Do something with request error
