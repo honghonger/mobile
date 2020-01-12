@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import { onLogin } from '@/api/user'
 export default {
   name: 'LoginPage',
   components: {},
@@ -53,11 +53,13 @@ export default {
       })
       // 使用try，catch捕获异常
       try {
-        const res = await request({
-          method: 'POST',
-          url: '/app/v1_0/authorizations',
-          data: this.user
-        })
+        // 封装了登录请求，直接调用
+        const res = await onLogin(this.user)
+        // request({
+        //   method: 'POST',
+        //   url: '/app/v1_0/authorizations',
+        //   data: this.user
+        // })
         console.log('登陆成功', res)
         this.$toast.success('登录成功')
       } catch (err) {
