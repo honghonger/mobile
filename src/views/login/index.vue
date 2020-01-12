@@ -61,6 +61,7 @@ export default {
         //   data: this.user
         // })
         console.log('登陆成功', res)
+        this.$store.commit('setuser', res.data.data)
         this.$toast.success('登录成功')
       } catch (err) {
         console.log('登录失败', err)
