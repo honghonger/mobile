@@ -7,7 +7,11 @@ import {
   CellGroup,
   Toast,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  Tab,
+  Tabs,
+  List,
+  PullRefresh
 } from 'vant'
 
 Vue
@@ -19,3 +23,7 @@ Vue
   .use(Toast)
   .use(Tabbar)
   .use(TabbarItem)
+  .use(Tab)
+  .use(Tabs)
+  .use(List)
+  .use(PullRefresh)
