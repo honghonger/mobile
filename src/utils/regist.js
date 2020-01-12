@@ -5,7 +5,9 @@ import {
   Field,
   Cell,
   CellGroup,
-  Toast
+  Toast,
+  Tabbar,
+  TabbarItem
 } from 'vant'
 
 Vue
@@ -15,3 +17,5 @@ Vue
   .use(Cell)
   .use(CellGroup)
   .use(Toast)
+  .use(Tabbar)
+  .use(TabbarItem)
