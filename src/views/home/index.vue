@@ -50,9 +50,9 @@
     </van-cell>
         <van-grid :gutter="10">
         <van-grid-item
-          v-for="value in 8"
-          :key="value"
-          text="文字"
+          v-for="channel in channels"
+          :key="channel.id"
+          :text="channel.name"
         />
       </van-grid>
     <!-- 我的频道管理 -->
@@ -61,7 +61,7 @@
     </van-cell>
       <van-grid :gutter="10">
         <van-grid-item
-          v-for="value in 8"
+           v-for="value in 8"
           :key="value"
           text="文字"
         />
