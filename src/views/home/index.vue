@@ -1,7 +1,7 @@
 <template>
   <div class="home">
        <!-- 导航栏组件 -->
-      <van-nav-bar title="首页"/>
+      <van-nav-bar title="首页" fixed />
       <!-- 频道列表，标签页 -->
       <van-tabs v-model="active">
           <!-- 绑定列表数据for循环 -->
@@ -113,6 +113,23 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+//给首页和频道固定定位、用到跟组件样式
+ .home{
+   //频道的根节点（右键审查元素得到）
+   .van-tabs{
+     //深度作用域子元素频道
+     /deep/ .van-tabs__wrap{
+       position: fixed;
+       top: 46px;
+       left: 0;
+       right: 0;
+       z-index: 2
+     }
+     //在深度到内容元素，距离首页和频道栏90px
+     /deep/ .van-tabs__content{
+       margin-top: 90px;
+     }
+   }
+ }
 </style>

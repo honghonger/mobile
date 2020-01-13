@@ -12,7 +12,9 @@ import {
   Tabs,
   List,
   PullRefresh,
-  Image
+  Image,
+  Grid,
+  GridItem
 } from 'vant'
 
 Vue
@@ -29,3 +31,5 @@ Vue
   .use(List)
   .use(PullRefresh)
   .use(Image)
+  .use(Grid)
+  .use(GridItem)
