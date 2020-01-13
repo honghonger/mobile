@@ -60,11 +60,12 @@
     <!-- 推荐频道管理--复制 -->
     <van-cell title="推荐频道">
     </van-cell>
-      <van-grid :gutter="10">
+      <van-grid :gutter="10" :square="true">
         <van-grid-item
            v-for="channel in recommendChannels"
           :key="channel.id"
           :text="channel.name"
+          @click="onChannelAdd(channel)"
         />
       </van-grid>
     </div>
@@ -179,6 +180,10 @@ export default {
     async onAllchannels () {
       const res = await getAllChannels()
       this.allChannels = res.data.data.channels
+    },
+
+    onChannelAdd (channel) {
+      this.channels.push(channel)
     }
   }
 }
