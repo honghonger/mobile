@@ -1,34 +1,49 @@
 <template>
   <div class="home">
-       <!-- 导航栏组件 -->
-      <van-nav-bar title="首页" fixed />
+    <!-- 导航栏组件 -->
+    <van-nav-bar title="首页" fixed />
+    <!-- 频道列表，标签页 -->
+    <van-tabs v-model="active">
+        <!-- 绑定列表数据for循环 -->
+      <van-tab
+        :title="channel.name"
+        v-for="channel in channels"
+        :key="channel.id"
+        >
+        <!-- 把需要下拉刷新的内容放到下拉刷新里面 -->
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-list
+        v-model="loading"
+        :finished="channel.finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+        >
+        <van-cell
+            v-for="article in channel.articles"
+            :key="article.art_id.toString()"
+            :title="article.title"
+        />
+      </van-list>
+      </van-pull-refresh>
+          <!-- 把需要下拉刷新的内容放到下拉刷新里面 -->
+      </van-tab>
+      <!-- 面包图标 使用vant插槽 -->
+    <div class="wap-nav" slot="nav-right" @click="ischannelshow=true">
+      <van-icon name="wap-nav" />
+    </div>
+      <!-- 面包图标 使用vant插槽 -->
+    </van-tabs>
       <!-- 频道列表，标签页 -->
-      <van-tabs v-model="active">
-          <!-- 绑定列表数据for循环 -->
-        <van-tab
-            :title="channel.name"
-            v-for="channel in channels"
-            :key="channel.id"
-            >
-            <!-- 把需要下拉刷新的内容放到下拉刷新里面 -->
-            <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-                <van-list
-                    v-model="loading"
-                    :finished="channel.finished"
-                    finished-text="没有更多了"
-                    @load="onLoad"
-                    >
-                    <van-cell
-                        v-for="article in channel.articles"
-                        :key="article.art_id.toString()"
-                        :title="article.title"
-                    />
-                </van-list>
-            </van-pull-refresh>
-            <!-- 把需要下拉刷新的内容放到下拉刷新里面 -->
-        </van-tab>
-      </van-tabs>
-      <!-- 频道列表，标签页 -->
+      <!-- 频道弹出层模块 -->
+    <van-popup
+      v-model="ischannelshow"
+      round
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      :style="{ height: '95%' }"
+    />
+      <!-- 频道弹出层模块 -->
   </div>
 </template>
 
@@ -44,7 +59,8 @@ export default {
       loading: false,
       finished: false,
       isLoading: false,
-      channels: []
+      channels: [],
+      ischannelshow: false
     }
   },
   created () {
@@ -125,11 +141,19 @@ export default {
        left: 0;
        right: 0;
        z-index: 2
-     }
+    }
      //在深度到内容元素，距离首页和频道栏90px
      /deep/ .van-tabs__content{
        margin-top: 90px;
-     }
-   }
+    }
+    .wap-nav{
+      position: sticky;
+      right: 0;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      opacity: 0.8;
+    }
+  }
  }
 </style>

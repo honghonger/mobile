@@ -14,7 +14,9 @@ import {
   PullRefresh,
   Image,
   Grid,
-  GridItem
+  GridItem,
+  Popup,
+  Icon
 } from 'vant'
 
 Vue
@@ -33,3 +35,5 @@ Vue
   .use(Image)
   .use(Grid)
   .use(GridItem)
+  .use(Popup)
+  .use(Icon)
