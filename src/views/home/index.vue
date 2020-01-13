@@ -42,6 +42,7 @@
       close-icon-position="top-left"
       position="bottom"
       :style="{ height: '95%' }"
+      @open='onAllchannels'
     >
     <!-- 我的频道管理 -->
     <div class="channel-edit">
@@ -76,6 +77,7 @@
 <script>
 import { getUserChannels } from '@/api/user.js'
 import { getArticles } from '@/api/article'
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'HomePage',
   data () {
@@ -86,7 +88,8 @@ export default {
       finished: false,
       isLoading: false,
       channels: [],
-      ischannelshow: true
+      ischannelshow: false, // 频道弹框
+      allChannels: []// 全部频道列表
     }
   },
   created () {
@@ -117,6 +120,7 @@ export default {
         articleChannel.finished = true
       }
     },
+
     // 下拉刷新
     async onRefresh () {
       // 获取当前频道
@@ -139,6 +143,7 @@ export default {
         : '暂无数据更新'
       this.$toast(message)
     },
+
     // 请求频道列表
     async loadUserChannels () {
       const res = await getUserChannels()
@@ -150,6 +155,12 @@ export default {
         channel.timestamp = null
       })
       this.channels = channels
+    },
+
+    // 全部频道列表
+    async onAllchannels () {
+      const res = await getAllChannels()
+      this.allChannels = res.data.data.channels
     }
   }
 }
