@@ -62,9 +62,9 @@
     </van-cell>
       <van-grid :gutter="10">
         <van-grid-item
-           v-for="value in 8"
-          :key="value"
-          text="文字"
+           v-for="channel in recommendChannels"
+          :key="channel.id"
+          :text="channel.name"
         />
       </van-grid>
     </div>
@@ -94,6 +94,24 @@ export default {
   },
   created () {
     this.loadUserChannels()
+  },
+  // 在计算属性中对推荐列表进行处理
+  computed: {
+    recommendChannels () {
+      // 先声明一个空数组
+      const arr = []
+      this.allChannels.forEach(channel => {
+      // 每遍历一次就去我的频道里找有没有遍历的channel的数据
+        const ret = this.channels.find(item => {
+          return item.id === channel.id
+        })
+        // 如果没有就往arr中push一下，就会得到推荐的列表
+        if (!ret) {
+          arr.push(channel)
+        }
+      })
+      return arr
+    }
   },
   methods: {
     async onLoad () {
