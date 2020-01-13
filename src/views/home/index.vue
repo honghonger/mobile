@@ -42,7 +42,33 @@
       close-icon-position="top-left"
       position="bottom"
       :style="{ height: '95%' }"
-    />
+    >
+    <!-- 我的频道管理 -->
+    <div class="channel-edit">
+    <van-cell title="我的频道">
+      <van-button type="danger" size="mini">编辑</van-button>
+    </van-cell>
+        <van-grid :gutter="10">
+        <van-grid-item
+          v-for="value in 8"
+          :key="value"
+          text="文字"
+        />
+      </van-grid>
+    <!-- 我的频道管理 -->
+    <!-- 推荐频道管理--复制 -->
+    <van-cell title="推荐频道">
+    </van-cell>
+      <van-grid :gutter="10">
+        <van-grid-item
+          v-for="value in 8"
+          :key="value"
+          text="文字"
+        />
+      </van-grid>
+    </div>
+    <!-- 推荐频道管理--复制 -->
+    </van-popup>
       <!-- 频道弹出层模块 -->
   </div>
 </template>
@@ -60,7 +86,7 @@ export default {
       finished: false,
       isLoading: false,
       channels: [],
-      ischannelshow: false
+      ischannelshow: true
     }
   },
   created () {
@@ -155,5 +181,8 @@ export default {
       opacity: 0.8;
     }
   }
+  .channel-edit{
+      padding-top: 30px;
+    }
  }
 </style>
