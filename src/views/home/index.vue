@@ -86,6 +86,7 @@
 import { getUserChannels } from '@/api/user.js'
 import { getArticles } from '@/api/article'
 import { getAllChannels } from '@/api/channel'
+import { setItem, getItem } from '@/utils/storage'
 export default {
   name: 'HomePage',
   data () {
@@ -120,6 +121,12 @@ export default {
         }
       })
       return arr
+    }
+  },
+  // 监视频道变化来本地持久化,存到本地
+  watch: {
+    channels () {
+      setItem('channels', this.channels)
     }
   },
   methods: {
@@ -173,17 +180,22 @@ export default {
 
     // 请求频道列表
     async loadUserChannels () {
-      const res = await getUserChannels()
-      //   为每个频道添加一个文章列表，利用循环
-      const channels = res.data.data.channels
-      channels.forEach(channel => {
-        channel.articles = []// 频道文章列表
-        channel.finished = false// 结束状态
-        channel.timestamp = null
-      })
-      this.channels = channels
+    // 在初始化的时候判断本地存储有没有数据，有就拿出来，没有就执行初始化的数据
+      const localChannels = getItem('channels')
+      if (localChannels) {
+        this.channels = localChannels
+      } else {
+        const res = await getUserChannels()
+        //   为每个频道添加一个文章列表，利用循环
+        const channels = res.data.data.channels
+        channels.forEach(channel => {
+          channel.articles = []// 频道文章列表
+          channel.finished = false// 结束状态
+          channel.timestamp = null
+        })
+        this.channels = channels
+      }
     },
-
     // 全部频道列表
     async onAllchannels () {
       const res = await getAllChannels()
