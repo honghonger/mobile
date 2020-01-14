@@ -199,7 +199,13 @@ export default {
     // 全部频道列表
     async onAllchannels () {
       const res = await getAllChannels()
-      this.allChannels = res.data.data.channels
+      const allChannels = res.data.data.channels
+      allChannels.forEach(channel => {
+        channel.articles = []// 频道文章列表
+        channel.finished = false// 结束状态
+        channel.timestamp = null
+      })
+      this.allChannels = allChannels
     },
 
     onChannelAdd (channel) {
