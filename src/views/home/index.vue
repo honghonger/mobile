@@ -55,9 +55,10 @@
     </van-cell>
         <van-grid :gutter="10">
         <van-grid-item
-          v-for="channel in channels"
+          v-for="(channel,index) in channels"
           :key="channel.id"
           :text="channel.name"
+          @click="onChannelActiveOrDelete(index)"
         >
         <van-icon name="close" slot="icon" size="15" v-show="isEdit"/>
         </van-grid-item>
@@ -95,7 +96,7 @@ export default {
       finished: false,
       isLoading: false,
       channels: [],
-      ischannelshow: true, // 频道弹框
+      ischannelshow: false, // 频道弹框
       allChannels: [], // 全部频道列表
       isEdit: false
     }
@@ -191,6 +192,18 @@ export default {
 
     onChannelAdd (channel) {
       this.channels.push(channel)
+    },
+
+    // 点击弹框里编辑或非编辑状态下的切换数据或删除数据
+    onChannelActiveOrDelete (index) {
+      // 接收传过来的索引
+      // 判断：if是编辑状态下就删除数据，非编辑状态下就切换，并关闭弹窗
+      if (this.isEdit) {
+        this.channels.splice(index, 1)
+      } else {
+        this.active = index
+        this.ischannelshow = false
+      }
     }
   }
 }
