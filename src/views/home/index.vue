@@ -58,9 +58,14 @@
           v-for="(channel,index) in channels"
           :key="channel.id"
           :text="channel.name"
-          @click="onChannelActiveOrDelete(index)"
+          @click="onChannelActiveOrDelete(channel,index)"
         >
-        <van-icon name="close" slot="icon" size="15" v-show="isEdit"/>
+        <van-icon name="close"
+        slot="icon"
+        size="15"
+        v-show="isEdit&&channel.name!=='推荐'"
+
+        />
         </van-grid-item>
       </van-grid>
     <!-- 我的频道管理 -->
@@ -213,10 +218,10 @@ export default {
     },
 
     // 点击弹框里编辑或非编辑状态下的切换数据或删除数据
-    onChannelActiveOrDelete (index) {
+    onChannelActiveOrDelete (channel, index) {
       // 接收传过来的索引
       // 判断：if是编辑状态下就删除数据，非编辑状态下就切换，并关闭弹窗
-      if (this.isEdit) {
+      if (this.isEdit && channel.name !== '推荐') {
         this.channels.splice(index, 1)
       } else {
         this.active = index
