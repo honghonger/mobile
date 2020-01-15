@@ -1,7 +1,15 @@
 <template>
   <div class="home">
     <!-- 导航栏组件 -->
-    <van-nav-bar title="首页" fixed />
+    <van-nav-bar  fixed >
+      <van-button
+      round
+      slot="title"
+      type="info"
+      size="mini"
+      @click="$router.push('/search')"
+      >搜索</van-button>
+    </van-nav-bar>
     <!-- 频道列表，标签页 -->
     <van-tabs v-model="active">
         <!-- 绑定列表数据for循环 -->
@@ -235,6 +243,11 @@ export default {
 <style lang="less" scoped>
 //给首页和频道固定定位、用到跟组件样式
  .home{
+   .van-button{
+     width: 100%;
+     background-color: yellow;
+     color: aqua
+   }
    //频道的根节点（右键审查元素得到）
    .van-tabs{
      //深度作用域子元素频道
