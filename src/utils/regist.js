@@ -16,7 +16,8 @@ import {
   Grid,
   GridItem,
   Popup,
-  Icon
+  Icon,
+  Search
 } from 'vant'
 
 Vue
@@ -37,3 +38,4 @@ Vue
   .use(GridItem)
   .use(Popup)
   .use(Icon)
+  .use(Search)
