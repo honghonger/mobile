@@ -42,17 +42,31 @@
 
 <script>
 import { getSearch } from '@/api/search'
-
+import { setItem, getItem } from '@/utils/storage'
 export default {
   name: 'searchPage',
   data () {
     return {
       searchText: '', // 用户输入的文本
-      searchs: []// 联想数据列表
+      searchs: [], // 联想数据列表
+      serchHistories: getItem('search-history')// 放本地存储历史记录的数据
     }
   },
   methods: {
     onSearch (q) {
+      // 非空判断
+      if (!q.trim()) {
+        return
+      }
+      const index = this.serchHistories.indexOf(q)
+      if (index !== -1) {
+        // 不要重复
+        this.serchHistories.splice(index, 1)
+      }
+      // 添加到数组中
+      this.serchHistories.unshift(q)
+      // 在跳转之前将搜索的关键字记录到搜索历史中
+      setItem('search-history', this.serchHistories)
       this.$router.push(`/search/${q}`)
     },
 
