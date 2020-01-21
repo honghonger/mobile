@@ -32,8 +32,14 @@
             <span>完成</span>
             <van-icon name="delete" size="mini"/>
         </van-cell>
-        <van-cell title="单元格">
-            <van-icon name="close" size="15"/>
+        <van-cell
+          :title="item"
+          v-for="item in serchHistories"
+          :key="item">
+        <van-icon
+          name="close"
+          size="15"
+        />
         </van-cell>
     </van-cell-group>
     <!-- 历史记录 -->
