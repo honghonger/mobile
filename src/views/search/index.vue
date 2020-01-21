@@ -28,9 +28,20 @@
     <!-- 历史记录 -->
     <van-cell-group>
         <van-cell title="历史记录">
-            <span>全部删除</span>&nbsp;&nbsp;
-            <span>完成</span>
-            <van-icon name="delete" size="mini"/>
+          <!-- 3一开始的时候全部删除和完成是隐藏的 -->
+            <div v-show="isDeleteShow">
+              <span>全部删除</span>&nbsp;&nbsp;
+              <span @click="isDeleteShow=false">完成</span>
+              <!-- 5当点击完成的时候就隐藏 -->
+            </div>
+            <van-icon
+            name="delete"
+            size="mini"
+            v-show="!isDeleteShow"
+            @click="isDeleteShow=true"
+            />
+            <!-- 4当点击删除按钮的时候，删除按钮隐藏所以=true -->
+            <!-- 2删除那个小图标是显示的，所以取反 就是显示 -->
         </van-cell>
         <van-cell
           :title="item"
@@ -39,7 +50,9 @@
         <van-icon
           name="close"
           size="15"
+          v-show="isDeleteShow"
         />
+        <!-- 1首先每个单元格右边的小x是隐藏的，所以默认就是false? -->
         </van-cell>
     </van-cell-group>
     <!-- 历史记录 -->
@@ -55,7 +68,8 @@ export default {
     return {
       searchText: '', // 用户输入的文本
       searchs: [], // 联想数据列表
-      serchHistories: getItem('search-history')// 放本地存储历史记录的数据
+      serchHistories: getItem('search-history'), // 放本地存储历史记录的数据
+      isDeleteShow: false// 控制历史记录删除的显示或隐藏
     }
   },
   methods: {
