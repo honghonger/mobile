@@ -9,7 +9,8 @@
         @search="onSearch"
         @input="onSearchIpunt"
     >
-       <div slot="action" @click="onSearch">搜索</div>
+    <!-- 把用户输入的内容传进来 -->
+       <div slot="action" @click="onSearch(searchText)">搜索</div>
     </van-search>
     <!-- 搜索框 -->
     <!-- 联想建议表格 -->
@@ -18,6 +19,7 @@
         icon="search"
         v-for="item in searchs"
         :key="item"
+        @click="onSearch(item)"
         >
         <div slot="title" v-html="heightlight(item)"></div>
         </van-cell>
@@ -50,7 +52,9 @@ export default {
     }
   },
   methods: {
-    onSearch () {},
+    onSearch (q) {
+      this.$router.push(`/search/${q}`)
+    },
 
     async onSearchIpunt () {
       // 非空校验
