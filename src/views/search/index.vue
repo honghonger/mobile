@@ -30,7 +30,7 @@
         <van-cell title="历史记录">
           <!-- 3一开始的时候全部删除和完成是隐藏的 -->
             <div v-show="isDeleteShow">
-              <span>全部删除</span>&nbsp;&nbsp;
+              <span @click="serchHistories=[]">全部删除</span>&nbsp;&nbsp;
               <span @click="isDeleteShow=false">完成</span>
               <!-- 5当点击完成的时候就隐藏 -->
             </div>
@@ -45,12 +45,13 @@
         </van-cell>
         <van-cell
           :title="item"
-          v-for="item in serchHistories"
+          v-for="(item,index) in serchHistories"
           :key="item">
         <van-icon
           name="close"
           size="15"
           v-show="isDeleteShow"
+          @click.stop="serchHistories.splice(index,1)"
         />
         <!-- 1首先每个单元格右边的小x是隐藏的，所以默认就是false? -->
         </van-cell>
@@ -70,6 +71,11 @@ export default {
       searchs: [], // 联想数据列表
       serchHistories: getItem('search-history'), // 放本地存储历史记录的数据
       isDeleteShow: false// 控制历史记录删除的显示或隐藏
+    }
+  },
+  watch: {
+    serchHistories () {
+      setItem('search-history', this.serchHistories)
     }
   },
   methods: {
