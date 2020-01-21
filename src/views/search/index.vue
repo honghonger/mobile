@@ -15,11 +15,12 @@
     <!-- 联想建议表格 -->
     <van-cell-group>
         <van-cell
-        :title="item"
         icon="search"
         v-for="item in searchs"
         :key="item"
-        />
+        >
+        <div slot="title" v-html="heightlight(item)"></div>
+        </van-cell>
     </van-cell-group>
     <!-- 联想建议表格 -->
     <!-- 历史记录 -->
@@ -60,6 +61,11 @@ export default {
       const res = await getSearch(this.searchText)
       //   console.log(res)
       this.searchs = res.data.data.options
+    },
+
+    heightlight (str) {
+      const reg = new RegExp(this.searchText, 'ig')
+      return str.replace(reg, `<span style="color:red">${this.searchText}</span>`)
     }
   }
 }

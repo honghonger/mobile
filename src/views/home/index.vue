@@ -7,6 +7,7 @@
       slot="title"
       type="info"
       size="mini"
+      class="searchKuang"
       @click="$router.push('/search')"
       >搜索</van-button>
     </van-nav-bar>
@@ -243,7 +244,7 @@ export default {
 <style lang="less" scoped>
 //给首页和频道固定定位、用到跟组件样式
  .home{
-   .van-button{
+   .searchKuang{
      width: 100%;
      background-color: yellow;
      color: aqua
