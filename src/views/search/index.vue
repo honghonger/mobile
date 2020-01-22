@@ -14,7 +14,7 @@
     </van-search>
     <!-- 搜索框 -->
     <!-- 联想建议表格 -->
-    <van-cell-group>
+    <van-cell-group v-show="searchText">
         <van-cell
         icon="search"
         v-for="item in searchs"
@@ -26,7 +26,7 @@
     </van-cell-group>
     <!-- 联想建议表格 -->
     <!-- 历史记录 -->
-    <van-cell-group>
+    <van-cell-group v-show="!searchText">
         <van-cell title="历史记录">
           <!-- 3一开始的时候全部删除和完成是隐藏的 -->
             <div v-show="isDeleteShow">
