@@ -31,6 +31,7 @@
             v-for="article in channel.articles"
             :key="article.art_id.toString()"
             :title="article.title"
+            @click="$router.push(`/article/${article.art_id}`)"
         />
       </van-list>
       </van-pull-refresh>
