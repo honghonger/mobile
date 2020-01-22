@@ -63,6 +63,8 @@
 <script>
 import { getSearch } from '@/api/search'
 import { setItem, getItem } from '@/utils/storage'
+import { debounce } from 'lodash'
+
 export default {
   name: 'searchPage',
   data () {
@@ -96,7 +98,7 @@ export default {
       this.$router.push(`/search/${q}`)
     },
 
-    async onSearchIpunt () {
+    onSearchIpunt: debounce(async function () {
       // 非空校验
       const searchText = this.searchText.trim()
       if (!searchText) {
@@ -105,7 +107,7 @@ export default {
       const res = await getSearch(this.searchText)
       //   console.log(res)
       this.searchs = res.data.data.options
-    },
+    }, 300),
 
     heightlight (str) {
       const reg = new RegExp(this.searchText, 'ig')
