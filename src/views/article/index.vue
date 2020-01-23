@@ -31,7 +31,14 @@
       </div>
       <div class="content" v-html="article.content"></div>
       <div class="zan">
-        <van-button round size="small" hairline type="primary" plain icon="good-job-o">点赞</van-button>
+        <van-button
+        round
+        size="small"
+        hairline
+        type="primary"
+        plain icon="good-job-o"
+        @click="onLike"
+        >{{article.attitude === 1 ? '取消点赞' : '点赞' }}</van-button>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <van-button round size="small" hairline type="danger" plain icon="delete">不喜欢</van-button>
       </div>
@@ -47,7 +54,7 @@
 </template>
 
 <script>
-import { getArticle } from '@/api/article'
+import { getArticle, addLike, deleteLike } from '@/api/article'
 import { following, unfollowing } from '@/api/user'
 
 export default {
@@ -87,14 +94,25 @@ export default {
       // 如果已关注，就取消关注，更新视图
       const userId = this.article.aut_id
       if (this.article.is_followed) {
-        const res = await unfollowing(userId)
-        console.log(res)
-
+        await unfollowing(userId)
         // this.article.is_followed = false
       } else {
         // 如果没关注，就关注并更新视图
         await following(userId)
         // this.article.is_followed = true
+      }
+      this.article.is_followed = !this.article.is_followed
+    },
+
+    async onLike () {
+      // 如果已关注，就取消关注，更新视图
+      if (this.article.attitude === 1) {
+        await deleteLike(this.articleId)
+        this.article.attitude = -1
+      } else {
+        // 如果没关注，就关注并更新视图
+        await addLike(this.articleId)
+        this.article.attitude = -1
       }
       this.article.is_followed = !this.article.is_followed
     }
