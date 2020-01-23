@@ -10,11 +10,11 @@
     <!-- /导航栏 -->
 
     <!-- 加载中 loading -->
-    <van-loading class="article-loading" />
+    <van-loading class="article-loading" v-if="loading"/>
     <!-- /加载中 loading -->
 
     <!-- 文章详情 -->
-    <div class="detail">
+    <div class="detail" v-else-if="article.title">
       <h3 class="title">{{article.title}}</h3>
       <div class="author">
         <van-image round width="2rem" height="2rem" fit="fill" :src="article.aut_photo" />
@@ -38,7 +38,7 @@
     <!-- /文章详情 -->
 
     <!-- 加载失败的消息提示 -->
-    <div class="error">
+    <div class="error" v-else>
       <p>网络超时，点击 <a href="#" @click.prevent="loadArticle">刷新</a> 试一试。</p>
     </div>
     <!-- /加载失败的消息提示 -->
@@ -69,8 +69,15 @@ export default {
 
   methods: {
     async loadArticle () {
-      const res = await getArticle(this.articleId)
-      this.article = res.data.data
+      // 开启loading
+      this.loading = true
+      try {
+        const res = await getArticle(this.articleId)
+        this.article = res.data.data
+      } catch (err) {
+        console.log(err)
+      }
+      this.loading = false
     }
   }
 }
