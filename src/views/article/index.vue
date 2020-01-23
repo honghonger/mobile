@@ -26,7 +26,8 @@
           round
           size="small"
           type="info"
-        >+ 关注</van-button>
+          @click="onfollow"
+        >{{article.is_followed ? '取消关注' : '+关注' }}</van-button>
       </div>
       <div class="content" v-html="article.content"></div>
       <div class="zan">
@@ -47,8 +48,10 @@
 
 <script>
 import { getArticle } from '@/api/article'
+import { following, unfollowing } from '@/api/user'
+
 export default {
-  name: 'ArticleIndex',
+  name: 'articlaIndex',
   props: {
     articleId: {
       type: String,
@@ -78,6 +81,22 @@ export default {
         console.log(err)
       }
       this.loading = false
+    },
+
+    async onfollow () {
+      // 如果已关注，就取消关注，更新视图
+      const userId = this.article.aut_id
+      if (this.article.is_followed) {
+        const res = await unfollowing(userId)
+        console.log(res)
+
+        // this.article.is_followed = false
+      } else {
+        // 如果没关注，就关注并更新视图
+        await following(userId)
+        // this.article.is_followed = true
+      }
+      this.article.is_followed = !this.article.is_followed
     }
   }
 }
